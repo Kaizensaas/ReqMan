@@ -7,24 +7,7 @@
         <title>ENOC</title>  
         <style>
             html{
-                background-color:#2F2F2F;
-            }
-            body {
-                height: 100%;
-                background-image: -webkit-gradient(
-                    linear,
-                    right bottom,
-                    right top,
-                    color-stop(0, #EDEDED),
-                    color-stop(0.08, #EAEAEA),
-                    color-stop(1, #2F2F2F),
-                    color-stop(1, #AAAAAA)
-                    );
-                background-image: -o-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
-                background-image: -moz-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
-                background-image: -webkit-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
-                background-image: -ms-linear-gradient(top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
-                background-image: linear-gradient(to top, #EDEDED 0%, #EAEAEA 8%, #2F2F2F 100%, #AAAAAA 100%);
+                background-color:#e9e9e9;
             }
             .username.ng-valid {
                 background-color: lightgreen;
@@ -54,42 +37,139 @@
         <script src="<c:url value='/static/js/app.js' />"></script>
         <script src="<c:url value='/static/js/controller/user_controller.js' />"></script>
         
+        <style type="text/css">
+body {
+	background-color: #e9e9e9;
+	margin:100px 100px 100px 100px;
+}
+div#fixedheader {
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	color:#CCC;
+	background:#333;
+	padding:16px;
+        margin: 0 auto;
+}
+div#right_part {
+    width:49%;
+    float:right;
+    border:2px solid #000;
+    text-align:right;
+}
+div#left_part {
+    border:0px solid #000;
+    float:left;
+    width:49%;
+}
+div#fixedfooter {
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	width:100%;
+	color:#CCC;
+	background:#333;
+	padding:8px;
+}
+
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+nav ul a {
+    text-decoration: none;
+}
+
+nav ul li {
+    border: 1px solid #a1a1a1;
+    padding: 10px 30px;
+    background: #dddddd;
+    width: 150px;
+    border-radius: 2px;
+    align-content: flex-start;
+}
+
+article {
+    margin-left: 170px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+
+</style>
+        
 
     </head>
     <body ng-app="myApp">
-        <c:if test="${pageContext.request.userPrincipal.name == null}">
-            <h2>
-                <c:redirect url="/login"/>
-            </h2>
-        </c:if> 
+        
+        <div>
+        
+        <div id="fixedheader">
+            <div id="left_part"><b style="color: white">My overview</b></div>
+            <div id="right_part"><span style="color: white"><b>${pageContext.request.userPrincipal.name} </b>| <a
+                        href="javascript:formSubmit()"> <b style="color:red">Logout</b> </a></span></div>
+        </div>
+                        
+                        <div id="nav">
+                            <nav>
+                                <ul>
+                                  <li><a data-toggle="pill" ui-sref="person">Person</a></li>
+                                  <li><a href="#">Link1</a></li>
+                                  <li><a href="#">Link2</a></li>
+                                  <li><a href="#">Link3</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        
+ 
+                        
+                        
+                        <div id="article">
+                            <article>
+                                
+                                
+                                
+                                <c:if test="${pageContext.request.userPrincipal.name == null}">
+                                    <h2>
+                                        <c:redirect url="/login"/>
+                                    </h2>
+                                </c:if> 
 
-    <sec:authorize access="hasRole('ROLE_USER')">
-        <!-- For login user -->
-        <c:url value="/logout" var="logoutUrl" />
-        <form action="${logoutUrl}" method="post" id="logoutForm">
-            <input type="hidden" name="${_csrf.parameterName}"
-                   value="${_csrf.token}" />
-        </form>
-        <script>
-            function formSubmit() {
-                document.getElementById("logoutForm").submit();
-            }
-        </script>
+                                <sec:authorize access="hasRole('ROLE_USER')">
+                                    <!-- For login user -->
+                                    <c:url value="/logout" var="logoutUrl" />
+                                    <form action="${logoutUrl}" method="post" id="logoutForm">
+                                        <input type="hidden" name="${_csrf.parameterName}"
+                                               value="${_csrf.token}" />
+                                    </form>
+                                    <script>
+                                        function formSubmit() {
+                                            document.getElementById("logoutForm").submit();
+                                        }
+                                    </script>
 
-        <c:if test="${pageContext.request.userPrincipal.name != null}">
-            <h5 style="color: #ffffff">
-                User : ${pageContext.request.userPrincipal.name} | <a
-                    href="javascript:formSubmit()"> Logout</a>
-            </h5>
+                                    <c:if test="${pageContext.request.userPrincipal.name != null}">
+                                        <div ui-view>
 
-            <ul class="nav nav-pills nav-justified">
-                <li><a data-toggle="pill" ui-sref="person">Person</a></li>
-            </ul> 
-            <div ui-view>
+                                        </div>
+                                    </c:if>
+                                </sec:authorize>
 
-            </div>
-        </c:if>
-    </sec:authorize>
+                            </article>
+                        </div>
+        
+        
+        
+    </div>    
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
